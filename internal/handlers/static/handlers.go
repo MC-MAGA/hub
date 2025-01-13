@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -31,7 +32,8 @@ const (
 	img-src 'self' data: https:;
 	manifest-src 'self';
 	script-src 'self' https://www.google-analytics.com;
-	style-src 'self' 'unsafe-inline'
+	style-src 'self' 'unsafe-inline';
+	frame-ancestors 'none';
 	`
 
 	indexCacheMaxAge = 5 * time.Minute
@@ -116,6 +118,7 @@ func (h *Handlers) Image(w http.ResponseWriter, r *http.Request) {
 
 	// Set headers and write image data to response writer
 	w.Header().Set("Cache-Control", helpers.BuildCacheControlHeader(StaticCacheMaxAge))
+	w.Header().Set("Content-Length", strconv.Itoa(len(data)))
 	if svg.Is(data) {
 		w.Header().Set("Content-Type", "image/svg+xml")
 	} else {

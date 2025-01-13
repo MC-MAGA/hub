@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { JSONSchema } from '../../../jsonschema';
 import Schema from './Schema';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const defaultSchema = require('./__fixtures__/index/1.json') as JSONSchema;
 
 const defaultProps = {

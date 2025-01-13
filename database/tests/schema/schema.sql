@@ -184,6 +184,7 @@ select columns_are('repository', array[
     'digest',
     'created_at',
     'data',
+    'packages_deletion_protection',
     'repository_kind_id',
     'user_id',
     'organization_id'
@@ -566,7 +567,9 @@ select results_eq(
         (21, 'Headlamp plugins'),
         (22, 'Inspektor gadgets'),
         (23, 'Tekton stepactions'),
-        (24, 'Meshery designs')
+        (24, 'Meshery designs'),
+        (25, 'OpenCost plugins'),
+        (26, 'Radius recipes')
     $$,
     'Repository kinds should exist'
 );

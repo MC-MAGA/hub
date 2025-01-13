@@ -133,6 +133,16 @@ describe('SVGIcons', () => {
     expect(screen.getByTitle('meshery'));
   });
 
+  it('renders OpenCost plugin icon', () => {
+    render(<SVGIcons name="opencost" />);
+    expect(screen.getByTitle('opencost'));
+  });
+
+  it('renders Radius recipe icon', () => {
+    render(<SVGIcons name="radius" />);
+    expect(screen.getByTitle('radius'));
+  });
+
   it('does not render when name is not in the list', () => {
     render(<SVGIcons name="not-listed" />);
     expect(screen.getByTestId('iconWrapper')).toBeEmptyDOMElement();

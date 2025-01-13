@@ -37,6 +37,8 @@ const ICONS: IconsList = {
   [RepositoryKind.InspektorGadget]: <SVGIcons name="inspektor-gadget" />,
   [RepositoryKind.TektonStepAction]: <SVGIcons name="tekton" />,
   [RepositoryKind.MesheryDesign]: <SVGIcons name="meshery" />,
+  [RepositoryKind.OpenCost]: <SVGIcons name="opencost" />,
+  [RepositoryKind.RadiusRecipe]: <SVGIcons name="radius" />,
 };
 
 const RepositoryIcon = (props: Props) => (

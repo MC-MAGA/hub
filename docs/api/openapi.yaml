@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Artifact Hub
   description: "Find, install and publish Cloud Native packages"
-  version: 1.18.0
+  version: 1.20.0
   contact:
     name: Artifact Hub support
     url: https://cloud-native.slack.com/channels/artifact-hub
@@ -1598,6 +1598,52 @@ paths:
           $ref: "#/components/responses/TooManyRequests"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  "/packages/opencost/{repoName}/{packageName}":
+    get:
+      tags:
+        - Packages
+      summary: Get package details
+      description: Get package details
+      operationId: getOpencostPluginDetails
+      parameters:
+        - $ref: "#/components/parameters/RepoNameParam"
+        - $ref: "#/components/parameters/PackageNameParam"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpencostPlugin"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/packages/radius/{repoName}/{packageName}":
+    get:
+      tags:
+        - Packages
+      summary: Get package details
+      description: Get package details
+      operationId: getRadiusRecipeDetails
+      parameters:
+        - $ref: "#/components/parameters/RepoNameParam"
+        - $ref: "#/components/parameters/PackageNameParam"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadiusRecipe"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   "/packages/tbaction/{repoName}/{packageName}":
     get:
       tags:
@@ -2189,6 +2235,54 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/OLMPackage"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/packages/opencost/{repoName}/{packageName}/{version}":
+    get:
+      tags:
+        - Packages
+      summary: Get package version details
+      description: Get package version details
+      operationId: getOpencostPluginVersionDetails
+      parameters:
+        - $ref: "#/components/parameters/RepoNameParam"
+        - $ref: "#/components/parameters/PackageNameParam"
+        - $ref: "#/components/parameters/VersionParam"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpencostPlugin"
+        "404":
+          $ref: "#/components/responses/NotFoundResponse"
+        "429":
+          $ref: "#/components/responses/TooManyRequests"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+  "/packages/radius/{repoName}/{packageName}/{version}":
+    get:
+      tags:
+        - Packages
+      summary: Get package version details
+      description: Get package version details
+      operationId: getRadiusRecipeVersionDetails
+      parameters:
+        - $ref: "#/components/parameters/RepoNameParam"
+        - $ref: "#/components/parameters/PackageNameParam"
+        - $ref: "#/components/parameters/VersionParam"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadiusRecipe"
         "404":
           $ref: "#/components/responses/NotFoundResponse"
         "429":
@@ -3827,21 +3921,20 @@ components:
               data.roles[role].users[_] == input.user
             }
         policy_data:
-          type: object
+          type: string
           nullable: false
-          additionalProperties: true
-          example:
-            roles:
-              owner:
-                users:
-                  - user1
-              customRole1:
-                users:
-                  - member1
-                  - member2
-                allowed_actions:
-                  - addOrganizationMember
-                  - addOrganizationRepository
+          example: |
+            {
+              "roles": {
+                "owner": {
+                  "users": ["user1"]
+                },
+                "customRole1": {
+                  "users": ["member1", "member2"],
+                  "allowed_actions": ["addOrganizationMember", "addOrganizationRepository"]
+                }
+              }
+            }
     ChangelogItemKind:
       type: string
       enum:
@@ -4460,6 +4553,20 @@ components:
                     policy1: |
                       - macro: text
                         condition: (evt.num < 0)
+    OpencostPlugin:
+      $ref: "#/components/schemas/Package"
+    RadiusRecipe:
+      allOf:
+        - $ref: "#/components/schemas/Package"
+        - type: object
+          properties:
+            data:
+              type: object
+              properties:
+                recipe:
+                  type: object
+                  nullable: false
+                  additionalProperties: true
     TBActionPackage:
       $ref: "#/components/schemas/Package"
     TektonPipelinePackage:
@@ -4969,6 +5076,8 @@ components:
           * `22` - Inspektor gadgets
           * `23` - Tekton stepactions
           * `24` - Meshery designs
+          * `25` - Opencost plugins
+          * `26` - Radius recipes
     RepositoryKindParam:
       type: string
       enum:
@@ -4997,6 +5106,8 @@ components:
         - inspektor-gadget
         - tekton-stepaction
         - meshery
+        - opencost
+        - radius
       description: |
         Repository kind name:
         * `helm` - Helm charts
@@ -5024,6 +5135,8 @@ components:
         * `inspektor-gadget` - Inspektor gadgets
         * `tekton-stepaction` - Tekton stepactions
         * `meshery` - Meshery designs
+        * `opencost` - Opencost plugins
+        * `radius` - Radius recipes
     RepositorySummary:
       type: object
       required:
@@ -5568,6 +5681,8 @@ components:
           * `22` - Inspektor gadgets
           * `23` - Tekton stepactions
           * `24` - Meshery designs
+          * `25` - Opencost plugins
+          * `26` - Radius recipes
     PackageNameParam:
       in: path
       name: packageName

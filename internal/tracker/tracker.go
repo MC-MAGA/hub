@@ -125,7 +125,7 @@ func (t *Tracker) Run() error {
 	}
 
 	// Unregister packages not available anymore
-	if len(packagesAvailable) > 0 {
+	if len(packagesAvailable) > 0 && !t.r.PackagesDeletionProtection {
 		for key := range packagesRegistered {
 			// Return ASAP if context is cancelled
 			select {
@@ -202,6 +202,8 @@ func (t *Tracker) cloneRepository() (string, string, error) {
 		hub.Kyverno,
 		hub.Meshery,
 		hub.OPA,
+		hub.OpenCost,
+		hub.Radius,
 		hub.TBAction,
 		hub.TektonPipeline,
 		hub.TektonTask,

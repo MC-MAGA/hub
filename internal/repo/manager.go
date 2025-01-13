@@ -25,6 +25,7 @@ import (
 	"github.com/go-git/go-git/v5/storage/memory"
 	"github.com/google/go-containerregistry/pkg/name"
 	"github.com/google/go-containerregistry/pkg/v1/remote"
+	"github.com/rs/zerolog/log"
 	"github.com/satori/uuid"
 	"github.com/spf13/viper"
 	"gopkg.in/yaml.v2"
@@ -99,6 +100,8 @@ var (
 		hub.Meshery,
 		hub.OLM,
 		hub.OPA,
+		hub.OpenCost,
+		hub.Radius,
 		hub.TBAction,
 		hub.TektonPipeline,
 		hub.TektonTask,
@@ -301,6 +304,8 @@ func (m *Manager) ClaimOwnership(ctx context.Context, repoName, orgName string) 
 		hub.Meshery,
 		hub.OLM,
 		hub.OPA,
+		hub.OpenCost,
+		hub.Radius,
 		hub.TBAction,
 		hub.TektonPipeline,
 		hub.TektonTask,
@@ -483,6 +488,8 @@ func (m *Manager) locateMetadataFile(r *hub.Repository, basePath string) string 
 		hub.Meshery,
 		hub.OLM,
 		hub.OPA,
+		hub.OpenCost,
+		hub.Radius,
 		hub.TBAction,
 		hub.TektonPipeline,
 		hub.TektonTask,
@@ -563,7 +570,7 @@ func (m *Manager) GetRemoteDigest(ctx context.Context, r *hub.Repository) (strin
 			}
 		case SchemeIsOCI(u):
 			// Digest is obtained by hashing the list of versions available
-			versions, err := m.tg.Tags(ctx, r, true)
+			versions, err := m.tg.Tags(ctx, r, true, true)
 			if err != nil {
 				return digest, err
 			}
@@ -826,6 +833,7 @@ func (m *Manager) validateURL(r *hub.Repository) error {
 	case hub.Helm:
 		if SchemeIsHTTP(u) {
 			if _, _, err := m.il.LoadIndex(r); err != nil {
+				log.Error().Err(err).Str("url", r.URL).Msg("error loading index")
 				return errors.New("the url provided does not point to a valid Helm repository")
 			}
 		}
@@ -849,6 +857,8 @@ func (m *Manager) validateURL(r *hub.Repository) error {
 		hub.Meshery,
 		hub.OLM,
 		hub.OPA,
+		hub.OpenCost,
+		hub.Radius,
 		hub.TBAction,
 		hub.TektonPipeline,
 		hub.TektonTask,
