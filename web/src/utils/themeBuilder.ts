@@ -1,7 +1,8 @@
-import { isNull } from 'lodash';
+import isNull from 'lodash/isNull';
 
 import getMetaTag from './getMetaTag';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const tinycolor = require('tinycolor2');
 
 interface ColorItem {

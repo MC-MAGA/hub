@@ -81,7 +81,7 @@ const HomeView = () => {
         autoClose: false,
       });
     }
-  }, [location]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [location]);
 
   return (
     <div className="d-flex flex-column flex-grow-1 bg-white home">
@@ -232,8 +232,8 @@ const HomeView = () => {
                 configurations, Open Policy Agent (OPA) and Gatekeeper policies, OLM operators, Tinkerbell actions,
                 kubectl plugins, Tekton tasks, pipelines and stepactions, KEDA scalers, CoreDNS plugins, Keptn
                 integrations, container images, Kubewarden policies, Kyverno policies, Knative client, Backstage
-                plugins, Argo templates, KubeArmor policies, KCL modules, Headlamp plugins, Inspektor gadgets and
-                Meshery designs.
+                plugins, Argo templates, KubeArmor policies, KCL modules, Headlamp plugins, Inspektor gadgets, Meshery
+                designs, OpenCost plugins, Radius recipes and Bootable Containers.
                 <div className="py-0 py-lg-5">
                   <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink
@@ -261,6 +261,18 @@ const HomeView = () => {
                       </div>
                     </ExternalLink>
                     <ExternalLink
+                      href="https://containers.github.io/bootable/"
+                      className={`col ${styles.iconLink}`}
+                      label="Open Bootable containers web"
+                    >
+                      <div className="d-flex flex-column justify-content-between align-items-center h-100">
+                        <RepositoryIcon kind={RepositoryKind.Bootc} type="white" className={styles.aboutIcon} />
+                        <div className={`d-none d-sm-block text-light mt-2 ${styles.legendIcon}`}>
+                          <small>Bootable containers</small>
+                        </div>
+                      </div>
+                    </ExternalLink>
+                    <ExternalLink
                       href="https://opencontainers.org"
                       className={`col ${styles.iconLink}`}
                       label="Open Container Initiative site"
@@ -284,6 +296,8 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
+                  </div>
+                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink href="https://falco.org" className={`col ${styles.iconLink}`} label="Open Falco site">
                       <div className="d-flex flex-column justify-content-between align-items-center h-100">
                         <RepositoryIcon kind={RepositoryKind.Falco} type="white" className={styles.aboutIcon} />
@@ -292,8 +306,6 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
-                  </div>
-                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink
                       href="https://headlamp.dev"
                       className={`col ${styles.iconLink}`}
@@ -338,6 +350,8 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
+                  </div>
+                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink href="https://keda.sh" className={`col ${styles.iconLink}`} label="Open KEDA site">
                       <div className="d-flex flex-column justify-content-between align-items-center h-100">
                         <RepositoryIcon kind={RepositoryKind.KedaScaler} type="white" className={styles.aboutIcon} />
@@ -346,8 +360,6 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
-                  </div>
-                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink href="https://keptn.sh" className={`col ${styles.iconLink}`} label="Open Keptn site">
                       <div className="d-flex flex-column justify-content-between align-items-center h-100">
                         <RepositoryIcon kind={RepositoryKind.Keptn} type="white" className={styles.aboutIcon} />
@@ -396,6 +408,8 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
+                  </div>
+                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink
                       href="https://www.kubewarden.io"
                       className={`col ${styles.iconLink}`}
@@ -408,8 +422,6 @@ const HomeView = () => {
                         </div>
                       </div>
                     </ExternalLink>
-                  </div>
-                  <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink
                       href="https://www.kyverno.io"
                       className={`col ${styles.iconLink}`}
@@ -461,6 +473,26 @@ const HomeView = () => {
                   </div>
                   <div className="mx-0 mx-md-3 mx-lg-5 my-4 my-sm-5 d-flex flex-row align-items-stretch justify-content-around">
                     <ExternalLink
+                      href="https://www.opencost.io"
+                      className={`col ${styles.iconLink}`}
+                      label="Open Policy Agent site"
+                    >
+                      <div className="d-flex flex-column justify-content-between align-items-center h-100">
+                        <RepositoryIcon kind={RepositoryKind.OpenCost} type="white" className={styles.aboutIcon} />
+                        <div className={`d-none d-sm-block text-light mt-2 ${styles.legendIcon}`}>
+                          <small>OpenCost plugins</small>
+                        </div>
+                      </div>
+                    </ExternalLink>
+                    <ExternalLink href="https://radapp.io" className={`col ${styles.iconLink}`} label="Radius site">
+                      <div className="d-flex flex-column justify-content-between align-items-center h-100">
+                        <RepositoryIcon kind={RepositoryKind.RadiusRecipe} type="white" className={styles.aboutIcon} />
+                        <div className={`d-none d-sm-block text-light mt-2 ${styles.legendIcon}`}>
+                          <small>Radius recipes</small>
+                        </div>
+                      </div>
+                    </ExternalLink>
+                    <ExternalLink
                       href="https://tekton.dev"
                       className={`col ${styles.iconLink}`}
                       label="Open Tekton site"
@@ -495,22 +527,27 @@ const HomeView = () => {
           </div>
           <div className="py-5 text-dark fs-4 fw-light">
             <div className="container-lg px-sm-4 px-lg-0 py-0 py-md-5">
-              <div className="text-center px-4 px-xs-0">
+              <div className="d-flex flex-column justify-content-center px-4 px-xs-0">
                 <img
-                  className={`${styles.logo} homeLogo`}
-                  src="/static/media/cncf-sandbox-horizontal-color.png"
-                  alt="Logo CNCF sandbox project"
+                  className={`${styles.logo} ${styles.colorLogo} homeLogo`}
+                  src="/static/media/cncf-incubating-color.svg"
+                  alt="Logo CNCF incubating project"
                 />
-                <div className="px-3 pt-4">
+                <img
+                  className={`${styles.logo} ${styles.whiteLogo} homeLogo`}
+                  src="/static/media/cncf-incubating-white.svg"
+                  alt="Logo CNCF incubating project"
+                />
+                <div className="px-3 pt-4 text-center w-100">
                   Artifact Hub is a{' '}
                   <ExternalLink
-                    href="https://www.cncf.io/sandbox-projects/"
+                    href="https://www.cncf.io/projects/"
                     className="fw-semibold text-dark"
-                    label="Open CNCF sandbox projects site"
+                    label="Open CNCF projects site"
                   >
                     Cloud Native Computing Foundation
                   </ExternalLink>{' '}
-                  sandbox project.
+                  incubating project.
                 </div>
               </div>
             </div>

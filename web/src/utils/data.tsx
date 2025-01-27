@@ -106,6 +106,15 @@ export const REPOSITORY_KINDS: RepoKindDef[] = [
     active: true,
   },
   {
+    kind: RepositoryKind.Bootc,
+    label: 'bootc',
+    name: 'Bootable containers',
+    singular: 'Bootable container',
+    plural: 'Bootable containers',
+    icon: <RepositoryIcon kind={RepositoryKind.Bootc} className="mw-100 mh-100" />,
+    active: true,
+  },
+  {
     kind: RepositoryKind.Container,
     label: 'container',
     name: 'Container images',
@@ -274,6 +283,24 @@ export const REPOSITORY_KINDS: RepoKindDef[] = [
     singular: 'OPA policies',
     plural: 'OPA policies',
     icon: <RepositoryIcon kind={RepositoryKind.OPA} className="mw-100 mh-100" />,
+    active: true,
+  },
+  {
+    kind: RepositoryKind.OpenCost,
+    label: 'opencost',
+    name: 'OpenCost plugins',
+    singular: 'OpenCost plugin',
+    plural: 'OpenCost plugins',
+    icon: <RepositoryIcon kind={RepositoryKind.OpenCost} className="mw-100 mh-100" />,
+    active: true,
+  },
+  {
+    kind: RepositoryKind.RadiusRecipe,
+    label: 'radius',
+    name: 'Radius recipes',
+    singular: 'Radius recipe',
+    plural: 'Radius recipes',
+    icon: <RepositoryIcon kind={RepositoryKind.RadiusRecipe} className="mw-100 mh-100" />,
     active: true,
   },
   {
@@ -813,7 +840,7 @@ export const CVSS_V3_VECTORS: { [key: string]: CVSSVectorMetric[] } = {
 export const OCI_PREFIX = 'oci://';
 
 export const PKG_DETAIL_PATH =
-  /^\/packages\/(helm|falco|opa|olm|tbaction|krew|helm-plugin|tekton-task|keda-scaler|coredns|keptn|tekton-pipeline|kubewarden|gatekeeper|kyverno|knative-client-plugin|backstage|argo-template|kubearmor|kcl|headlamp|inspektor-gadget|tekton-stepaction|meshery|container)\//;
+  /^\/packages\/(helm|falco|opa|olm|tbaction|krew|helm-plugin|tekton-task|keda-scaler|coredns|keptn|tekton-pipeline|kubewarden|gatekeeper|kyverno|knative-client-plugin|backstage|argo-template|kubearmor|kcl|headlamp|inspektor-gadget|tekton-stepaction|meshery|opencost|radius|bootc|container)\//;
 
 export const HOME_ROUTES = [
   '/verify-email',

@@ -1,4 +1,6 @@
-import { isEmpty, isNull, isUndefined } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 import { useCallback, useEffect, useState } from 'react';
 
 import { ContainerImage, RepositoryKind, SecurityReportSummary, VulnerabilitySeverity } from '../../../types';
@@ -30,7 +32,7 @@ interface Props {
 }
 
 const SecurityReport = (props: Props) => {
-  const [isOlderThenOneYear, setIsOlderThenOneYear] = useState<boolean>(false);
+  const [isOlderThanOneYear, setIsOlderThanOneYear] = useState<boolean>(true);
 
   const hasSomeWhitelistedContainers = useCallback((): boolean => {
     return props.containers.some((container: ContainerImage) => container.whitelisted);
@@ -45,15 +47,15 @@ const SecurityReport = (props: Props) => {
 
   useEffect(() => {
     setHasWhitelistedContainers(hasSomeWhitelistedContainers());
-  }, [props.containers]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [props.containers]);
 
   useEffect(() => {
     const diffInYears = calculateDiffInYears(props.ts);
-    setIsOlderThenOneYear(diffInYears > 1);
+    setIsOlderThanOneYear(diffInYears > 1);
   }, [props.ts]);
 
   // Do not display security reports when version is older than 1 year
-  if (isOlderThenOneYear) return null;
+  if (isOlderThanOneYear) return null;
 
   if (!props.disabledReport) {
     if (isNull(props.summary) || isUndefined(props.summary) || isEmpty(props.summary)) {
@@ -108,7 +110,7 @@ const SecurityReport = (props: Props) => {
             {total > 0 && (
               <>
                 {SEVERITY_ORDER.map((severity: VulnerabilitySeverity) => {
-                  if (!props.summary!.hasOwnProperty(severity) || props.summary![severity] === 0) return null;
+                  if (isUndefined(props.summary![severity]) || props.summary![severity] === 0) return null;
                   return (
                     <div
                       key={`summary_${severity}`}

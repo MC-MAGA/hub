@@ -1,5 +1,5 @@
-import { isNull, isUndefined } from 'lodash';
-import { Fragment } from 'react';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 import { FaFileSignature } from 'react-icons/fa';
 
 import { HelmChartSignKey, RepositoryKind, Signature } from '../../../types';
@@ -25,12 +25,14 @@ const SIGNATURE_NAME = {
 
 const Signed = (props: Props) => {
   const notSupported = ![
-    RepositoryKind.Helm,
     RepositoryKind.Container,
+    RepositoryKind.Helm,
+    RepositoryKind.InspektorGadget,
     RepositoryKind.Kubewarden,
     RepositoryKind.TektonPipeline,
     RepositoryKind.TektonTask,
     RepositoryKind.TektonStepAction,
+    RepositoryKind.Bootc,
   ].includes(props.repoKind);
 
   return (

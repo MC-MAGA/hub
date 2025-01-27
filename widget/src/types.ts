@@ -53,6 +53,9 @@ export enum RepositoryKind {
   InspektorGadget,
   TektonStepAction,
   MesheryDesign,
+  OpenCost,
+  RadiusRecipe,
+  Bootc,
 }
 
 export interface SearchResults {

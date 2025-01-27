@@ -16,6 +16,7 @@ At the moment, the following artifacts kinds are supported *(with plans to suppo
 
 - [Argo templates](https://argoproj.github.io/argo-workflows/)
 - [Backstage plugins](https://backstage.io)
+- [Bootable containers](https://containers.github.io/bootc/)
 - [Containers images](https://opencontainers.org)
 - [CoreDNS plugins](https://coredns.io/)
 - [Falco configurations](https://falco.org/)
@@ -34,7 +35,9 @@ At the moment, the following artifacts kinds are supported *(with plans to suppo
 - [Kyverno policies](https://kyverno.io)
 - [Meshery designs](https://meshery.io)
 - [OLM operators](https://github.com/operator-framework)
+- [OpenCost plugins](https://www.opencost.io)
 - [Open Policy Agent (OPA) policies](https://www.openpolicyagent.org/)
+- [Radius Recipes](https://radapp.io)
 - [Tekton tasks, pipelines and stepactions](https://tekton.dev/)
 - [Tinkerbell actions](https://tinkerbell.org/)
 
@@ -48,7 +51,7 @@ You can use Artifact Hub to:
 
 Feel free to ask any questions on the #artifact-hub channel in the CNCF Slack. To get an invite please visit [http://slack.cncf.io/](http://slack.cncf.io/).
 
-Artifact Hub is a [CNCF Sandbox Project](https://www.cncf.io/sandbox-projects/).
+Artifact Hub is a [CNCF Incubating Project](https://www.cncf.io/projects/).
 
 <br/>
 <table>

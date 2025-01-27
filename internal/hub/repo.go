@@ -121,6 +121,15 @@ const (
 
 	// Meshery represents a repository with Meshery designs.
 	Meshery RepositoryKind = 24
+
+	// OpenCost represents a repository with OpenCost plugins.
+	OpenCost RepositoryKind = 25
+
+	// Radius represents a repository with Radius recipes.
+	Radius RepositoryKind = 26
+
+	// Bootc represents a repository with Bootable containers.
+	Bootc RepositoryKind = 27
 )
 
 // GetKindName returns the name of the provided repository kind.
@@ -130,6 +139,8 @@ func GetKindName(kind RepositoryKind) string {
 		return "argo-template"
 	case Backstage:
 		return "backstage"
+	case Bootc:
+		return "bootc"
 	case Container:
 		return "container"
 	case CoreDNS:
@@ -168,6 +179,10 @@ func GetKindName(kind RepositoryKind) string {
 		return "olm"
 	case OPA:
 		return "opa"
+	case OpenCost:
+		return "opencost"
+	case Radius:
+		return "radius"
 	case TBAction:
 		return "tbaction"
 	case TektonPipeline:
@@ -189,6 +204,8 @@ func GetKindFromName(kind string) (RepositoryKind, error) {
 		return ArgoTemplate, nil
 	case "backstage":
 		return Backstage, nil
+	case "bootc":
+		return Bootc, nil
 	case "container":
 		return Container, nil
 	case "coredns":
@@ -227,6 +244,10 @@ func GetKindFromName(kind string) (RepositoryKind, error) {
 		return OLM, nil
 	case "opa":
 		return OPA, nil
+	case "opencost":
+		return OpenCost, nil
+	case "radius":
+		return Radius, nil
 	case "tbaction":
 		return TBAction, nil
 	case "tekton-pipeline":
@@ -260,29 +281,30 @@ type Owner struct {
 
 // Repository represents a packages repository.
 type Repository struct {
-	RepositoryID            string          `json:"repository_id"`
-	Name                    string          `json:"name"`
-	DisplayName             string          `json:"display_name"`
-	URL                     string          `json:"url"`
-	Branch                  string          `json:"branch"`
-	Private                 bool            `json:"private"`
-	AuthUser                string          `json:"auth_user"`
-	AuthPass                string          `json:"auth_pass"`
-	Digest                  string          `json:"digest"`
-	Kind                    RepositoryKind  `json:"kind"`
-	UserID                  string          `json:"user_id"`
-	UserAlias               string          `json:"user_alias"`
-	OrganizationID          string          `json:"organization_id"`
-	OrganizationName        string          `json:"organization_name"`
-	OrganizationDisplayName string          `json:"organization_display_name"`
-	LastScanningErrors      string          `json:"last_scanning_errors"`
-	LastTrackingErrors      string          `json:"last_tracking_errors"`
-	VerifiedPublisher       bool            `json:"verified_publisher"`
-	Official                bool            `json:"official"`
-	CNCF                    bool            `json:"cncf"`
-	Disabled                bool            `json:"disabled"`
-	ScannerDisabled         bool            `json:"scanner_disabled"`
-	Data                    json.RawMessage `json:"data,omitempty"`
+	RepositoryID               string          `json:"repository_id"`
+	Name                       string          `json:"name"`
+	DisplayName                string          `json:"display_name"`
+	URL                        string          `json:"url"`
+	Branch                     string          `json:"branch"`
+	Private                    bool            `json:"private"`
+	AuthUser                   string          `json:"auth_user"`
+	AuthPass                   string          `json:"auth_pass"`
+	Digest                     string          `json:"digest"`
+	Kind                       RepositoryKind  `json:"kind"`
+	UserID                     string          `json:"user_id"`
+	UserAlias                  string          `json:"user_alias"`
+	OrganizationID             string          `json:"organization_id"`
+	OrganizationName           string          `json:"organization_name"`
+	OrganizationDisplayName    string          `json:"organization_display_name"`
+	LastScanningErrors         string          `json:"last_scanning_errors"`
+	LastTrackingErrors         string          `json:"last_tracking_errors"`
+	VerifiedPublisher          bool            `json:"verified_publisher"`
+	Official                   bool            `json:"official"`
+	CNCF                       bool            `json:"cncf"`
+	Disabled                   bool            `json:"disabled"`
+	ScannerDisabled            bool            `json:"scanner_disabled"`
+	Data                       json.RawMessage `json:"data,omitempty"`
+	PackagesDeletionProtection bool            `json:"packages_deletion_protection"`
 }
 
 // RepositoryCloner describes the methods a RepositoryCloner implementation

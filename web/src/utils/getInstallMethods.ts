@@ -1,4 +1,5 @@
-import { isNull, isUndefined } from 'lodash';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 
 import {
   Channel,
@@ -114,6 +115,9 @@ const getInstallMethods = (props: PackageInfo): InstallMethodOutput => {
         case RepositoryKind.Headlamp:
         case RepositoryKind.InspektorGadget:
         case RepositoryKind.MesheryDesign:
+        case RepositoryKind.OpenCost:
+        case RepositoryKind.RadiusRecipe:
+        case RepositoryKind.Bootc:
           if (isUndefined(pkg.install)) {
             output.errorMessage = 'This package does not include installation instructions yet.';
             hasError = true;

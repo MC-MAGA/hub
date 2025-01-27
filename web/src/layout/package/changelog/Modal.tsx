@@ -1,5 +1,7 @@
 import classnames from 'classnames';
-import { isNull, isUndefined } from 'lodash';
+import isEmpty from 'lodash/isEmpty';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 import { useEffect, useRef, useState } from 'react';
 import { CgFileDocument } from 'react-icons/cg';
@@ -55,13 +57,13 @@ const ChangelogModal = (props: Props) => {
     } else if (openStatus && !props.visibleChangelog) {
       onCloseModal(false);
     }
-  }, [props.packageId, props.currentVersion]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [props.packageId, props.currentVersion]);
 
   useEffect(() => {
     if (props.visibleChangelog && !openStatus && isUndefined(currentPkgId)) {
       onOpenModal();
     }
-  }, []); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, []);
 
   useEffect(() => {
     if (btnsWrapper && btnsWrapper.current && !isUndefined(activeVersionIndex)) {
@@ -71,7 +73,13 @@ const ChangelogModal = (props: Props) => {
         activeChild.scrollIntoView({ block: 'nearest' });
       }
     }
-  }, [activeVersionIndex]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [activeVersionIndex]);
+
+  const removeEmptyVersions = (data: ChangeLog[]): ChangeLog[] => {
+    return data.filter(
+      (item: ChangeLog) => !isNull(item.changes) && !isUndefined(item.changes) && !isEmpty(item.changes)
+    );
+  };
 
   useEffect(() => {
     // We load correct active version after rendering modal
@@ -95,7 +103,7 @@ const ChangelogModal = (props: Props) => {
         setActiveVersionIndex(0);
       }
     }
-  }, [openStatus, changelog]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [openStatus, changelog]);
 
   if (
     [RepositoryKind.Falco, RepositoryKind.Krew, RepositoryKind.HelmPlugin, RepositoryKind.Container].includes(
@@ -108,7 +116,7 @@ const ChangelogModal = (props: Props) => {
     try {
       setIsLoading(true);
       setCurrentPkgId(props.packageId);
-      setChangelog(await API.getChangelog(props.packageId));
+      setChangelog(removeEmptyVersions(await API.getChangelog(props.packageId)));
       setIsLoading(false);
       setOpenStatus(true);
     } catch {

@@ -52,6 +52,12 @@ const getRepoKind = (repoName: string): RepositoryKind | null => {
       return RepositoryKind.TektonStepAction;
     case 'meshery':
       return RepositoryKind.MesheryDesign;
+    case 'opencost':
+      return RepositoryKind.OpenCost;
+    case 'radius':
+      return RepositoryKind.RadiusRecipe;
+    case 'bootc':
+      return RepositoryKind.Bootc;
     default:
       return null;
   }
@@ -109,6 +115,12 @@ const getRepoKindName = (repoKind: RepositoryKind): string | null => {
       return 'tekton-stepaction';
     case RepositoryKind.MesheryDesign:
       return 'meshery';
+    case RepositoryKind.OpenCost:
+      return 'opencost';
+    case RepositoryKind.RadiusRecipe:
+      return 'radius';
+    case RepositoryKind.Bootc:
+      return 'bootc';
     default:
       return null;
   }

@@ -8,6 +8,7 @@ mkdir -p docs/www/content/topics/repositories
 cat docs/www/headers/repositories docs/repositories.md > docs/www/content/topics/repositories/_index.md
 cat docs/www/headers/argo_templates_repositories docs/argo_templates_repositories.md > docs/www/content/topics/repositories/argo-templates.md
 cat docs/www/headers/backstage_plugins_repositories docs/backstage_plugins_repositories.md > docs/www/content/topics/repositories/backstage-plugins.md
+cat docs/www/headers/bootable_containers_repositories docs/bootable_containers_repositories.md > docs/www/content/topics/repositories/bootable-containers.md
 cat docs/www/headers/container_images_repositories docs/container_images_repositories.md > docs/www/content/topics/repositories/container-images.md
 cat docs/www/headers/coredns_plugins_repositories docs/coredns_plugins_repositories.md > docs/www/content/topics/repositories/coredns-plugins.md
 cat docs/www/headers/falco_rules_repositories docs/falco_rules_repositories.md > docs/www/content/topics/repositories/falco-rules.md
@@ -27,6 +28,8 @@ cat docs/www/headers/kyverno_policies_repositories docs/kyverno_policies_reposit
 cat docs/www/headers/meshery_designs_repositories docs/meshery_designs_repositories.md > docs/www/content/topics/repositories/meshery-designs.md
 cat docs/www/headers/olm_operators_repositories docs/olm_operators_repositories.md > docs/www/content/topics/repositories/olm-operators.md
 cat docs/www/headers/opa_policies_repositories docs/opa_policies_repositories.md > docs/www/content/topics/repositories/opa-policies.md
+cat docs/www/headers/opencost_plugins_repositories docs/opencost_plugins_repositories.md > docs/www/content/topics/repositories/opencost-plugins.md
+cat docs/www/headers/radius_recipes_repositories docs/radius_recipes_repositories.md > docs/www/content/topics/repositories/radius-recipes.md
 cat docs/www/headers/tekton_pipelines_repositories docs/tekton_pipelines_repositories.md > docs/www/content/topics/repositories/tekton-pipelines.md
 cat docs/www/headers/tekton_tasks_repositories docs/tekton_tasks_repositories.md > docs/www/content/topics/repositories/tekton-tasks.md
 cat docs/www/headers/tekton_stepactions_repositories docs/tekton_stepactions_repositories.md > docs/www/content/topics/repositories/tekton-stepactions.md

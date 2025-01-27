@@ -1,5 +1,6 @@
 import classnames from 'classnames';
-import { isNull, isUndefined } from 'lodash';
+import isNull from 'lodash/isNull';
+import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 import { Dispatch, SetStateAction, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BsDot } from 'react-icons/bs';
@@ -24,6 +25,7 @@ interface Props {
   activeVersionIndex: number;
   setActiveVersionIndex: Dispatch<SetStateAction<number | undefined>>;
   repository: Repository;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   state: any;
 }
 
@@ -73,8 +75,7 @@ const Content = (props: Props) => {
           if (isNull(item.changes) || isUndefined(item.changes)) return null;
 
           const hasBadge = item.changes.some(
-            (change: Change) =>
-              change.hasOwnProperty('kind') && !isUndefined(change.kind) && change.kind.toString() !== ''
+            (change: Change) => !isUndefined(change.kind) && change.kind.toString() !== ''
           );
 
           return (
@@ -142,7 +143,7 @@ const Content = (props: Props) => {
                               styles[`${change.kind.toString()}ChangeBadge`]
                             )}
                           >
-                            <span className={`position-relative ${styles.badgeIcon}`}>
+                            <span>
                               {(() => {
                                 switch (change.kind) {
                                   case ChangeKind.added:
@@ -162,7 +163,9 @@ const Content = (props: Props) => {
                                 }
                               })()}
                             </span>
-                            <span className="d-none d-md-block ms-1">{change.kind.toString()}</span>
+                            <span className={`d-none d-md-block ms-1 ${styles.badgeContent}`}>
+                              {change.kind.toString()}
+                            </span>
                           </div>
                         </div>
                       ) : (

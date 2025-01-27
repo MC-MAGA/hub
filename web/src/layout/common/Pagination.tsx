@@ -1,6 +1,6 @@
 import classnames from 'classnames';
-import { isString } from 'lodash';
 import isNumber from 'lodash/isNumber';
+import isString from 'lodash/isString';
 import { useEffect, useState } from 'react';
 import { FaCaretLeft, FaCaretRight } from 'react-icons/fa';
 
@@ -25,7 +25,7 @@ interface ButtonProps {
 
 const getPaginationOptions = (currentPage: number, pageCount: number): (string | number)[] => {
   const delta = 1;
-  let range = [];
+  const range = [];
   for (let i = Math.max(2, currentPage - delta); i <= Math.min(pageCount - 1, currentPage + delta); i++) {
     range.push(i);
   }
@@ -84,7 +84,7 @@ const Pagination = (props: Props) => {
             content={
               <>
                 <span className="d-none d-sm-block">Previous</span>
-                <span className={`d-block d-sm-none ${styles.btnIcon}`}>
+                <span className="d-block d-sm-none">
                   <FaCaretLeft />
                 </span>
               </>
@@ -120,7 +120,7 @@ const Pagination = (props: Props) => {
             content={
               <>
                 <span className="d-none d-sm-block">Next</span>
-                <span className={`d-block d-sm-none ${styles.btnIcon}`}>
+                <span className="d-block d-sm-none">
                   <FaCaretRight />
                 </span>
               </>

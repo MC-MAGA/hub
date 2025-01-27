@@ -10,19 +10,23 @@ metadata:
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": before-hook-creation
 {{- end }}
-{{- with .Values.dbMigrator.job.extraJobLabels }}
   labels:
+    {{- include "chart.labels" . | nindent 4 }}
+{{- with .Values.dbMigrator.job.extraJobLabels }}
     {{- toYaml . | nindent 4 }}
 {{- end }}
 spec:
   ttlSecondsAfterFinished: {{ .Values.dbMigrator.job.ttlSecondsAfterFinished }}
   template:
-    {{- with .Values.dbMigrator.job.extraPodLabels }}
     metadata:
       labels:
+        {{- include "chart.labels" . | nindent 8 }}
+    {{- with .Values.dbMigrator.job.extraPodLabels }}
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
+      automountServiceAccountToken: {{ .Values.dbMigrator.job.automountServiceAccountToken }}
+      serviceAccountName: {{ .Values.dbMigrator.job.serviceAccountName }}
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -42,6 +46,10 @@ spec:
         - name: db-migrator
           image: {{ .Values.dbMigrator.job.image.repository }}:{{ .Values.imageTag | default (printf "v%s" .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.pullPolicy }}
+          {{- with .Values.dbMigrator.job.containerSecurityContext }}
+          securityContext:
+            {{-  toYaml . | nindent 12 }}
+          {{- end }}
           {{- with .Values.dbMigrator.job.resources }}
           resources:
             {{- toYaml . | nindent 12 }}

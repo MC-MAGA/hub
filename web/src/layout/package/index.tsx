@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { isArray } from 'lodash';
+import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
 import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
@@ -28,6 +28,7 @@ import {
   Package,
   PackageLink,
   PackageViewsStats,
+  RadiusRecipeData,
   Recommendation,
   RepositoryKind,
   Version,
@@ -123,12 +124,12 @@ const PackageView = () => {
     if (isUndefined(relatedPosition)) {
       updateRelatedPosition();
     }
-  }, [relatedPosition]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [relatedPosition]);
 
   useEffect(() => {
     async function fetchRelatedPackages(pkgDetail: Package) {
       try {
-        let name = pkgDetail.name.split('-');
+        const name = pkgDetail.name.split('-');
         let words = [...name];
         if (!isUndefined(pkgDetail.keywords) && pkgDetail.keywords.length > 0) {
           words = [...name, ...pkgDetail.keywords];
@@ -167,7 +168,7 @@ const PackageView = () => {
       getBanner();
       fetchRelatedPackages(detail);
     }
-  }, [currentPkgId]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [currentPkgId]);
 
   async function trackView(pkgID: string, version: string) {
     try {
@@ -180,7 +181,7 @@ const PackageView = () => {
   async function getViewsStats(pkgID: string) {
     try {
       setViewsStats(await API.getViews(pkgID));
-    } catch (err: any) {
+    } catch {
       // Don't display any error if API request fails
     }
   }
@@ -190,7 +191,7 @@ const PackageView = () => {
     setIsLoading(false);
     // Force check related packages position after rendering readme
     setRelatedPosition(undefined);
-  }, []); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, []);
 
   async function fetchPackageDetail() {
     try {
@@ -201,7 +202,7 @@ const PackageView = () => {
         repositoryKind: repositoryKind!,
         repositoryName: repositoryName!,
       });
-      let metaTitle = `${detailPkg.normalizedName} ${detailPkg.version} · ${
+      const metaTitle = `${detailPkg.normalizedName} ${detailPkg.version} · ${
         detailPkg.repository.userAlias || detailPkg.repository.organizationName
       }/${detailPkg.repository.name}`;
       updateMetaIndex(metaTitle, detailPkg.description);
@@ -225,6 +226,7 @@ const PackageView = () => {
         stopPkgLoading();
         setRelatedPosition(undefined);
       }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       if (err.kind === ErrorKind.NotFound) {
         setApiError(
@@ -267,15 +269,13 @@ const PackageView = () => {
     setIsLoadingPackage(true);
     setIsLoading(true);
     fetchPackageDetail();
-    /* eslint-disable react-hooks/exhaustive-deps */
   }, [packageName, version, repositoryName, repositoryKind]);
-  /* eslint-enable react-hooks/exhaustive-deps */
 
   useEffect(() => {
     return () => {
       stopPkgLoading();
     };
-  }, []); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, []);
 
   let sortedVersions: Version[] = [];
   if (detail && detail.availableVersions) {
@@ -332,6 +332,7 @@ const PackageView = () => {
       !isUndefined(detail.data.rules)
     ) {
       if (isArray(detail.data.rules)) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         rules = detail.data.rules.map((item: any, index: number) => {
           return {
             name:
@@ -467,6 +468,20 @@ const PackageView = () => {
     return policy;
   };
 
+  const getRadiusRecipeFiles = (): { [key: string]: string } | undefined => {
+    let files: { [key: string]: string } | undefined;
+    if (
+      !isUndefined(detail) &&
+      !isNull(detail) &&
+      !isNull(detail.data) &&
+      !isUndefined(detail.data) &&
+      !isUndefined(detail.data[RadiusRecipeData.Recipe])
+    ) {
+      files = detail.data[RadiusRecipeData.Recipe] as { [key: string]: string };
+    }
+    return files;
+  };
+
   const getArgoTemplate = (): string | undefined => {
     let template: string | undefined;
     if (
@@ -498,10 +513,11 @@ const PackageView = () => {
   const getCRDs = (): CustomResourcesDefinition[] | undefined => {
     let resources: CustomResourcesDefinition[] | undefined;
     if (detail && detail.crds) {
-      let examples: CustomResourcesDefinitionExample[] = detail.crdsExamples || [];
+      const examples: CustomResourcesDefinitionExample[] = detail.crdsExamples || [];
       resources = detail.crds.map((resourceDefinition: CustomResourcesDefinition) => {
         return {
           ...resourceDefinition,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           example: examples.find((info: any) => info.kind === resourceDefinition.kind),
         };
       });
@@ -518,7 +534,7 @@ const PackageView = () => {
         scrollIntoView();
       }
     }
-  }, [location.hash]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [location.hash]);
 
   const scrollIntoView = useCallback(
     (id?: string) => {
@@ -549,12 +565,12 @@ const PackageView = () => {
           }
         }
       } finally {
+        // eslint-disable-next-line no-unsafe-finally
         return;
       }
     },
-    /* eslint-disable react-hooks/exhaustive-deps */
+
     [location.hash, fromStarredPage]
-    /* eslint-enable react-hooks/exhaustive-deps */
   );
 
   const getSupportLink = (): string | undefined => {
@@ -576,22 +592,24 @@ const PackageView = () => {
     const additionalContent = (
       <>
         {(() => {
+          let file: string | undefined;
+          let files: { [key: string]: string } | undefined;
           switch (detail.repository.kind) {
             case RepositoryKind.Krew:
-              let manifest: string | undefined = getManifestRaw();
-              if (!isUndefined(manifest)) {
+              file = getManifestRaw();
+              if (!isUndefined(file)) {
                 additionalTitles += '# Manifest\n';
               }
               return (
                 <>
-                  {!isUndefined(manifest) && (
+                  {!isUndefined(file) && (
                     <div className={`mb-5 ${styles.codeWrapper}`}>
                       <AnchorHeader level={2} scrollIntoView={scrollIntoView} title="Manifest" />
 
                       <div
                         className={`d-flex d-xxxl-inline-block mw-100 position-relative overflow-hidden border border-1 ${styles.manifestWrapper}`}
                       >
-                        <BlockCodeButtons content={manifest} filename={`${detail.normalizedName}-rules.yaml`} />
+                        <BlockCodeButtons content={file} filename={`${detail.normalizedName}-rules.yaml`} />
                         <SyntaxHighlighter
                           language="yaml"
                           style={docco}
@@ -611,7 +629,7 @@ const PackageView = () => {
                           }}
                           showLineNumbers
                         >
-                          {manifest}
+                          {file}
                         </SyntaxHighlighter>
                       </div>
                     </div>
@@ -620,20 +638,20 @@ const PackageView = () => {
               );
 
             case RepositoryKind.Gatekeeper:
-              let tmpl: string | undefined = getGatekeeperTemplate();
-              if (!isUndefined(tmpl)) {
+              file = getGatekeeperTemplate();
+              if (!isUndefined(file)) {
                 additionalTitles += '# Template\n';
               }
               return (
                 <>
-                  {!isUndefined(tmpl) && (
+                  {!isUndefined(file) && (
                     <div className={`mb-5 ${styles.codeWrapper}`}>
                       <AnchorHeader level={2} scrollIntoView={scrollIntoView} title="Template" />
 
                       <div
                         className={`d-flex d-xxxl-inline-block mw-100 position-relative overflow-hidden border border-1 ${styles.manifestWrapper}`}
                       >
-                        <BlockCodeButtons content={tmpl} filename={`${detail.normalizedName}-template.yaml`} />
+                        <BlockCodeButtons content={file} filename={`${detail.normalizedName}-template.yaml`} />
                         <SyntaxHighlighter
                           language="yaml"
                           style={docco}
@@ -653,7 +671,7 @@ const PackageView = () => {
                           }}
                           showLineNumbers
                         >
-                          {tmpl}
+                          {file}
                         </SyntaxHighlighter>
                       </div>
                     </div>
@@ -662,20 +680,20 @@ const PackageView = () => {
               );
 
             case RepositoryKind.Kyverno:
-              let policy: string | undefined = getKyvernoPolicy();
-              if (!isUndefined(policy)) {
+              file = getKyvernoPolicy();
+              if (!isUndefined(file)) {
                 additionalTitles += '# Policy\n';
               }
               return (
                 <>
-                  {!isUndefined(policy) && (
+                  {!isUndefined(file) && (
                     <div className={`mb-5 ${styles.codeWrapper}`}>
                       <AnchorHeader level={2} scrollIntoView={scrollIntoView} title="Policy" />
 
                       <div
                         className={`d-flex d-xxxl-inline-block mw-100 position-relative overflow-hidden border border-1 ${styles.manifestWrapper}`}
                       >
-                        <BlockCodeButtons content={policy} filename={`${detail.normalizedName}-policy.yaml`} />
+                        <BlockCodeButtons content={file} filename={`${detail.normalizedName}-policy.yaml`} />
                         <SyntaxHighlighter
                           language="yaml"
                           style={docco}
@@ -695,7 +713,7 @@ const PackageView = () => {
                           }}
                           showLineNumbers
                         >
-                          {policy}
+                          {file}
                         </SyntaxHighlighter>
                       </div>
                     </div>
@@ -704,20 +722,20 @@ const PackageView = () => {
               );
 
             case RepositoryKind.ArgoTemplate:
-              let argoTpml: string | undefined = getArgoTemplate();
-              if (!isUndefined(argoTpml)) {
+              file = getArgoTemplate();
+              if (!isUndefined(file)) {
                 additionalTitles += '# Template\n';
               }
               return (
                 <>
-                  {!isUndefined(argoTpml) && (
+                  {!isUndefined(file) && (
                     <div className={`mb-5 ${styles.codeWrapper}`}>
                       <AnchorHeader level={2} scrollIntoView={scrollIntoView} title="Template" />
 
                       <div
                         className={`d-flex d-xxxl-inline-block mw-100 position-relative overflow-hidden border border-1 ${styles.manifestWrapper}`}
                       >
-                        <BlockCodeButtons content={argoTpml} filename={`${detail.normalizedName}-template.yaml`} />
+                        <BlockCodeButtons content={file} filename={`${detail.normalizedName}-template.yaml`} />
                         <SyntaxHighlighter
                           language="yaml"
                           style={docco}
@@ -737,9 +755,59 @@ const PackageView = () => {
                           }}
                           showLineNumbers
                         >
-                          {argoTpml}
+                          {file}
                         </SyntaxHighlighter>
                       </div>
+                    </div>
+                  )}
+                </>
+              );
+
+            case RepositoryKind.RadiusRecipe:
+              files = getRadiusRecipeFiles();
+              if (!isUndefined(file)) {
+                additionalTitles += '# Recipe\n';
+              }
+              return (
+                <>
+                  {!isUndefined(files) && (
+                    <div className={`mb-5 ${styles.codeWrapper}`}>
+                      <AnchorHeader level={2} scrollIntoView={scrollIntoView} title="Recipe" />
+                      {Object.keys(files).map((fileName: string) => {
+                        const content = files![fileName];
+                        const extension = fileName.split('.').pop();
+                        return (
+                          <div key={fileName}>
+                            <div className="h5 my-3">{fileName}</div>
+                            <div
+                              className={`d-flex d-xxxl-inline-block mw-100 position-relative overflow-hidden border border-1 ${styles.manifestWrapper}`}
+                            >
+                              <BlockCodeButtons content={content} filename={fileName} />
+                              <SyntaxHighlighter
+                                language={extension}
+                                style={docco}
+                                customStyle={{
+                                  backgroundColor: 'transparent',
+                                  padding: '1.5rem',
+                                  lineHeight: '1.25rem',
+                                  marginBottom: '0',
+                                  height: '100%',
+                                  fontSize: '80%',
+                                  color: '#636a6e',
+                                }}
+                                lineNumberStyle={{
+                                  color: 'var(--color-black-25)',
+                                  marginRight: '5px',
+                                  fontSize: '0.8rem',
+                                }}
+                                showLineNumbers
+                              >
+                                {content}
+                              </SyntaxHighlighter>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
                 </>
@@ -1101,7 +1169,8 @@ const PackageView = () => {
                               }
                               normalizedName={detail.normalizedName}
                               title="Custom Resources Definition"
-                              files={getCRDs() as any}
+                              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                              files={getCRDs() as any[]}
                             />
                           </div>
 
@@ -1132,7 +1201,8 @@ const PackageView = () => {
                                         }
                                         normalizedName={detail.normalizedName}
                                         title="Examples"
-                                        files={getTektonExamples() as any}
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                        files={getTektonExamples() as any[]}
                                       />
                                     </div>
                                     <TektonManifestModal
@@ -1229,7 +1299,8 @@ const PackageView = () => {
                                       }
                                       normalizedName={detail.normalizedName}
                                       title="Policies"
-                                      files={getOPAPolicies() as any}
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      files={getOPAPolicies() as any[]}
                                     />
                                   </div>
                                 );
@@ -1256,7 +1327,8 @@ const PackageView = () => {
                                       }
                                       normalizedName={detail.normalizedName}
                                       title="Rules"
-                                      files={getFalcoRules() as any}
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      files={getFalcoRules() as any[]}
                                     />
                                   </div>
                                 );
@@ -1283,7 +1355,8 @@ const PackageView = () => {
                                       }
                                       normalizedName={detail.normalizedName}
                                       title="Policies"
-                                      files={getKubeArmorPolicies() as any}
+                                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                      files={getKubeArmorPolicies() as any[]}
                                     />
                                   </div>
                                 );

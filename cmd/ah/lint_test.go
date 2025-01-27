@@ -121,10 +121,15 @@ func TestLintCmd(t *testing.T) {
 			"no packages found",
 			errNoPackagesFound,
 		},
+		{
+			"kyverno",
+			"test18",
+			"four packages found, two with errors",
+			errLintFailed,
+		},
 	}
 
 	for _, tc := range testCases {
-		tc := tc
 		t.Run(fmt.Sprintf("%s: %s", tc.kind, tc.desc), func(t *testing.T) {
 			t.Parallel()
 

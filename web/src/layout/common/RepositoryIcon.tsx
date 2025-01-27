@@ -109,6 +109,18 @@ const ICONS = {
     default: '/static/media/meshery.svg',
     white: '/static/media/meshery-light.svg',
   },
+  [RepositoryKind.OpenCost]: {
+    default: '/static/media/opencost.svg',
+    white: '/static/media/opencost-light.svg',
+  },
+  [RepositoryKind.RadiusRecipe]: {
+    default: '/static/media/radius.svg',
+    white: '/static/media/radius-light.svg',
+  },
+  [RepositoryKind.Bootc]: {
+    default: '/static/media/bootc.svg',
+    white: '/static/media/bootc-light.svg',
+  },
 };
 
 const RepositoryIcon = (props: Props) => {

@@ -1,4 +1,6 @@
-import { isEmpty, isUndefined } from 'lodash';
+import { ApexOptions } from 'apexcharts';
+import isEmpty from 'lodash/isEmpty';
+import isUndefined from 'lodash/isUndefined';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
@@ -18,6 +20,7 @@ interface Props {
 
 interface Series {
   name: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
 }
 
@@ -45,7 +48,7 @@ const getMostRecentVersions = (stats: PackageViewsStats): string[] => {
 const prepareChartsSeries = (repoKind: RepositoryKind, stats: PackageViewsStats, version?: string): Series[] => {
   if (isEmpty(stats)) return [];
 
-  let series: Series[] = [];
+  const series: Series[] = [];
   let visibleVersions: string[] = [];
   if (version) {
     if (!isUndefined(stats[version])) {
@@ -77,9 +80,10 @@ const prepareChartsSeries = (repoKind: RepositoryKind, stats: PackageViewsStats,
 };
 
 const PackagesViewsStats = (props: Props) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [series, setSeries] = useState<any[]>([]);
 
-  const getStackedChartConfig = (): ApexCharts.ApexOptions => {
+  const getStackedChartConfig = (): ApexOptions => {
     return {
       chart: {
         id: 'pkg-views',
@@ -101,7 +105,7 @@ const PackagesViewsStats = (props: Props) => {
       },
       tooltip: {
         x: {
-          formatter: (val: number, opts?: any): string => {
+          formatter: (val: number): string => {
             return moment(val).format('DD MMM YY');
           },
         },
@@ -164,7 +168,7 @@ const PackagesViewsStats = (props: Props) => {
     if (!isUndefined(props.stats)) {
       setSeries(prepareChartsSeries(props.repoKind, props.stats, props.version));
     }
-  }, [props.version, props.stats]); /* eslint-disable-line react-hooks/exhaustive-deps */
+  }, [props.version, props.stats]);
 
   if (series.length === 0 && !isUndefined(props.stats)) return null;
 

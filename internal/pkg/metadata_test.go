@@ -188,7 +188,6 @@ func TestPreparePackageFromMetadata(t *testing.T) {
 		},
 	}
 	for i, tc := range testCases {
-		tc := tc
 		t.Run(strconv.Itoa(i), func(t *testing.T) {
 			t.Parallel()
 			pkg, err := PreparePackageFromMetadata(tc.md)
@@ -611,9 +610,90 @@ func TestValidatePackageMetadata(t *testing.T) {
 					`only "gadget" and "gadget-alternative-location" images can be provided`,
 				},
 			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+				},
+				[]string{
+					`"bootc" image not provided`,
+				},
+			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "something",
+							Image: "registry.io/namespace/something:tag",
+						},
+					},
+				},
+				[]string{
+					`"bootc" image not provided`,
+				},
+			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "bootc",
+							Image: "registry.io/namespace/bootc:tag",
+						},
+						{
+							Name:  "something",
+							Image: "registry.io/namespace/something:tag",
+						},
+					},
+				},
+				[]string{
+					`only "bootc" and "bootc-alternative-location" images can be provided`,
+				},
+			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "bootc",
+							Image: "registry.io/namespace/bootc:tag",
+						},
+						{
+							Name:  "bootc-alternative-location",
+							Image: "registry2.io/namespace/bootc:tag",
+						},
+						{
+							Name:  "something",
+							Image: "registry.io/namespace/something:tag",
+						},
+					},
+				},
+				[]string{
+					`only "bootc" and "bootc-alternative-location" images can be provided`,
+				},
+			},
 		}
 		for i, tc := range testCases {
-			tc := tc
 			t.Run(strconv.Itoa(i), func(t *testing.T) {
 				t.Parallel()
 				err := ValidatePackageMetadata(tc.kind, tc.md)
@@ -771,9 +851,67 @@ func TestValidatePackageMetadata(t *testing.T) {
 					},
 				},
 			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					Category:    "security",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "bootc",
+							Image: "registry.io/namespace/bootc:tag",
+						},
+					},
+				},
+			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					Category:    "security",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "bootc",
+							Image: "registry.io/namespace/bootc:tag",
+						},
+						{
+							Name:  "bootc-alternative-location",
+							Image: "registry2.io/namespace/bootc:tag",
+						},
+					},
+				},
+			},
+			{
+				hub.Bootc,
+				&hub.PackageMetadata{
+					Version:     "1.0.0",
+					Name:        "pkg1",
+					DisplayName: "Package 1",
+					CreatedAt:   "2006-01-02T15:04:05Z",
+					Description: "description",
+					Category:    "security",
+					ContainersImages: []*hub.ContainerImage{
+						{
+							Name:  "bootc-alternative-location",
+							Image: "registry2.io/namespace/bootc:tag",
+						},
+						{
+							Name:  "bootc",
+							Image: "registry.io/namespace/bootc:tag",
+						},
+					},
+				},
+			},
 		}
 		for i, tc := range testCases {
-			tc := tc
 			t.Run(strconv.Itoa(i), func(t *testing.T) {
 				t.Parallel()
 				err := ValidatePackageMetadata(tc.kind, tc.md)

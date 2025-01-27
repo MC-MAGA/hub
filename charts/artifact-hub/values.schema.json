@@ -112,6 +112,12 @@
                             "default": {},
                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
                         },
+                        "containerSecurityContext": {
+                            "title": "DB migrator container security context",
+                            "type": "object",
+                            "default": {},
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
                         "ttlSecondsAfterFinished": {
                             "title": "Lifetime after finished execution",
                             "description": "Limits the lifetime of the job after it has finished execution",
@@ -120,6 +126,16 @@
                                 "null",
                                 "integer"
                             ]
+                        },
+                        "automountServiceAccountToken": {
+                            "title": "Automount service account token",
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "serviceAccountName": {
+                            "title": "Service account name",
+                            "type": "string",
+                            "default": "default"
                         }
                     },
                     "required": [
@@ -283,6 +299,12 @@
                             "type": "array",
                             "default": "[]"
                         },
+                        "extraContainers": {
+                            "title": "Extra containers",
+                            "description": "Optionally specify extra list of additional containers for the hub deployment",
+                            "type": "array",
+                            "default": "[]"
+                        },
                         "image": {
                             "type": "object",
                             "properties": {
@@ -326,6 +348,12 @@
                                             "type": "object",
                                             "default": {},
                                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements"
+                                        },
+                                        "securityContext": {
+                                            "title": "Check DB migrator pod security context",
+                                            "type": "object",
+                                            "default": {},
+                                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
                                         }
                                     }
                                 },
@@ -341,6 +369,12 @@
                                             "type": "object",
                                             "default": {},
                                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.ResourceRequirements"
+                                        },
+                                        "securityContext": {
+                                            "title": "Check DB readiness pod security context",
+                                            "type": "object",
+                                            "default": {},
+                                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
                                         }
                                     }
                                 }
@@ -383,6 +417,12 @@
                         },
                         "securityContext": {
                             "title": "Hub pod security context",
+                            "type": "object",
+                            "default": {},
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
+                        "containerSecurityContext": {
+                            "title": "Hub container security context",
                             "type": "object",
                             "default": {},
                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
@@ -1036,6 +1076,17 @@
                             "type": "object",
                             "default": {},
                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
+                        "containerSecurityContext": {
+                            "title": "Scanner container security context",
+                            "type": "object",
+                            "default": {},
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
+                        "serviceAccountName": {
+                            "title": "Service account name",
+                            "type": "string",
+                            "default": "default"
                         }
                     },
                     "required": [
@@ -1149,6 +1200,17 @@
                             "type": "object",
                             "default": {},
                             "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
+                        "containerSecurityContext": {
+                            "title": "Scanner container security context",
+                            "type": "object",
+                            "default": {},
+                            "$ref": "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.19.0/_definitions.json#/definitions/io.k8s.api.core.v1.SecurityContext"
+                        },
+                        "serviceAccountName": {
+                            "title": "Service account name",
+                            "type": "string",
+                            "default": "default"
                         }
                     },
                     "required": [
@@ -1162,7 +1224,7 @@
                 },
                 "repositoriesKinds": {
                     "title": "Repositories kinds to process ([] = all)",
-                    "description": "The following kinds are supported at the moment: falco, helm, olm, opa, tbaction, krew, helm-plugin, tekton-task, keda-scaler, coredns, keptn, tekton-pipeline, container, kubewarden, gatekeeper, kyverno, knative-client-plugin, backstage, argo-template, kubearmor, kcl, headlamp, inspektor-gadget, tekton-stepaction, meshery",
+                    "description": "The following kinds are supported at the moment: falco, helm, olm, opa, tbaction, krew, helm-plugin, tekton-task, keda-scaler, coredns, keptn, tekton-pipeline, container, kubewarden, gatekeeper, kyverno, knative-client-plugin, backstage, argo-template, kubearmor, kcl, headlamp, inspektor-gadget, tekton-stepaction, meshery, opencost, radius, bootc",
                     "type": "array",
                     "items": {
                         "type": "string"
@@ -1230,7 +1292,7 @@
                         "image": {
                             "title": "Trivy container image",
                             "type": "string",
-                            "default": "aquasec/trivy:0.50.1"
+                            "default": "aquasec/trivy:0.56.1"
                         },
                         "nodeSelector": {
                             "title": "Trivy pod node selector",
